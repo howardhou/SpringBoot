@@ -1,0 +1,56 @@
+// build.gradle：Gradle构建说明文件。
+buildscript {
+	ext {
+		springBootVersion = '2.1.2.RELEASE'
+		flywayVersion = '5.2.4'
+		h2Version = '1.4.197'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.flywaydb:flyway-gradle-plugin:${flywayVersion}"
+		// 这个引用是必须的 for h2 数据库
+		classpath "com.h2database:h2:${h2Version}"
+	}
+}
+
+//apply plugin: 'java'
+//构建 WAR 文件
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+apply plugin: 'org.flywaydb.flyway'
+
+flyway {
+	url='jdbc:h2:file:./out/test2'
+//	url = 'jdbc:mysql://10.40.3.16:3306/test2?characterEncoding=utf-8'
+//	driver = 'org.h2.Driver'
+	user = 'sa'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly "com.h2database:h2"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//	开启数据库迁移
+	implementation 'org.flywaydb:flyway-core'
+
+//	SpringBoot2.0 已被移除， 未找到对应的解决方案
+//	implementation 'org.springframework.boot:spring-boot-starter-remote-shell'
+}
