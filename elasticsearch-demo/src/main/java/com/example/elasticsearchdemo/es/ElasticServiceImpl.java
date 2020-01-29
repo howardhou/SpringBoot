@@ -1,10 +1,10 @@
-package com.example.elasticsearchdemo;
+package com.example.elasticsearchdemo.es;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ElasticServiceImpl implements IElasticService {
 
     @Autowired
-    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+    private ElasticsearchTemplate elasticsearchRestTemplate;
 
     @Autowired
     private ElasticRepository elasticRepository;

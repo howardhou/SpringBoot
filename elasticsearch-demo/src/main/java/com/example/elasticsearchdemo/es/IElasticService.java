@@ -1,5 +1,6 @@
-package com.example.elasticsearchdemo;
+package com.example.elasticsearchdemo.es;
 
+import com.example.elasticsearchdemo.es.DocBean;
 import org.springframework.data.domain.Page;
 
 import java.util.Iterator;

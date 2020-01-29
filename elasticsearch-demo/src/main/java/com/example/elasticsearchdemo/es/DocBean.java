@@ -1,4 +1,4 @@
-package com.example.elasticsearchdemo;
+package com.example.elasticsearchdemo.es;
 
 
 import lombok.Data;
@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "ems", type = "_doc", shards = 2, replicas = 0)
+@Document(indexName = "emsc", type = "_doc", shards = 2, replicas = 0)
 public class DocBean {
 
     @Id
@@ -23,7 +23,7 @@ public class DocBean {
     @Field(type = FieldType.Keyword)
     private String secordCode;
 
-    @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    @Field(type = FieldType.Text, analyzer = "ik_smart")
     private String content;
 
     @Field(type = FieldType.Integer)
