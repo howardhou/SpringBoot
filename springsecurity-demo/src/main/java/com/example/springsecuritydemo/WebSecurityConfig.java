@@ -20,13 +20,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/hello").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")   // 角色检查
-                .antMatchers("/user/**").hasRole("USER")   // 角色检查
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")   // 角色检查
+                .antMatchers("/user/**").hasAuthority("USER")   // 角色检查
+                .antMatchers("/**").hasAnyAuthority("ADMIN","USER")
                 //.anyRequest().authenticated()
                 .and().formLogin()
                 .and().httpBasic();
-        super.configure(http);
+        //super.configure(http);
     }
 
 
