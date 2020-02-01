@@ -7,6 +7,7 @@ import com.example.springsecuritydemo.jwt.JWTLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,34 +17,50 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Objects;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
                 .antMatchers("/", "/hello").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")   // 角色检查
-                .antMatchers("/user/**").hasAuthority("USER")   // 角色检查
-                .antMatchers("/**").hasAnyAuthority("ADMIN","USER")
-                //.anyRequest().authenticated()
+                .antMatchers("/**").authenticated()
+//                .anyRequest().authenticated()
                 .and().formLogin()
-                .and().httpBasic()
-                .and()
-                // 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
-                // 添加一个过滤器验证其他请求的Token是否合法
-                .addFilterBefore(new JWTAuthenticationFilter(),
-                        UsernamePasswordAuthenticationFilter.class);;
-        //super.configure(http);
+                .and().httpBasic();
     }
 
 
+    // 需要配置这个支持password模式 , support password grant type
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
+    // 支持 OAuth2 的密码编码方式， 因为OAuth2 不支持 BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return charSequence.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return Objects.equals(charSequence.toString(),s);
+            }
+        };
     }
 
     @Override
@@ -54,10 +71,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(new CustomAuthenticationProvider());
+//        auth.authenticationProvider(new CustomAuthenticationProvider());
 //        auth.userDetailsService(userDetailsService());
-        //auth.inMemoryAuthentication()
-        //        .withUser("user").password(passwordEncoder().encode("1234")).roles("USER")
-        //        .and().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN", "USER");
+        auth.inMemoryAuthentication()
+                .withUser("user")
+                .password(passwordEncoder().encode("1234"))
+                .roles("USER");
     }
 }

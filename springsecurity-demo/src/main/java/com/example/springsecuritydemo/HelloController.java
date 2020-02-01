@@ -15,4 +15,9 @@ public class HelloController {
     public String message(){
         return "you have a message!";
     }
+
+    @RequestMapping("/hi")
+    public String hi(String name){
+        return "hi " + name;
+    }
 }
