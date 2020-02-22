@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace要指向定义的mapper接口 -->
+<mapper namespace="com.example.mybatisdemo.dao.CardDao">
+    <!-- id即mapper接口中的具体方法名 -->
+    <!-- resultType即方法返回值-->
+    <select id="getCardById" parameterType="int" resultType="com.example.mybatisdemo.entity.Card">
+        SELECT * FROM tb_card WHERE id = #{id}
+    </select>
+
+</mapper>

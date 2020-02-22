@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace要指向定义的mapper接口 -->
+<mapper namespace="com.example.mybatisdemo.dao.AssetDao">
+
+    <!--多对一关系-->
+    <select id="getAssetById" parameterType="int" resultMap="assetMap">
+        select * from tb_user, tb_asset
+        where tb_user.id = tb_asset.user_id
+        and tb_asset.id = #{id}
+    </select>
+
+    <resultMap id="assetMap" type="com.example.mybatisdemo.entity.Asset">
+        <id property="id" column="id"></id>
+        <result property="code" column="code" />
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <association property="user" javaType="com.example.mybatisdemo.entity.User">
+            <id property="id" column="id" />
+            <result property="name" column="name"/>
+            <result property="sex" column="sex"/>
+            <result property="age" column="age"/>
+        </association>
+    </resultMap>
+
+    <!-- id即mapper接口中的具体方法名 -->
+    <!-- resultType即方法返回值 ：  -->
+    <select id="getAssetsByUserId" parameterType="int" resultType="com.example.mybatisdemo.entity.Asset" >
+        SELECT * FROM tb_asset WHERE user_id = #{userId}
+    </select>
+
+</mapper>

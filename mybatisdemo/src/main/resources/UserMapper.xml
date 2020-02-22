@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace要指向定义的mapper接口 -->
+<mapper namespace="com.example.mybatisdemo.dao.UserDao">
+    <!-- select 元素 映射查询语句 -->
+    <!-- id即mapper接口中的具体方法名 -->
+    <!-- resultType即方法返回值-->
+    <select id="getUserById" parameterType="int" resultMap="userWithCardMap">
+        SELECT * FROM tb_user WHERE id = #{id}
+    </select>
+
+    <!--一对一关系-->
+    <resultMap id="userWithCardMap" type="com.example.mybatisdemo.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <association property="card" column="card_id" javaType="com.example.mybatisdemo.entity.Card"
+                     select="com.example.mybatisdemo.dao.CardDao.getCardById" />
+    </resultMap>
+
+    <!--一对多关系-->
+    <select id="getUserWithAssetsById" parameterType="int" resultMap="userWithAssetMap">
+        SELECT * FROM tb_user WHERE id = #{id}
+    </select>
+    <resultMap id="userWithAssetMap" type="com.example.mybatisdemo.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <!--fetchType="lazy" 懒加载， 需要在添加@JsonIgnoreProperties({"handler"})注解，否则会报异常-->
+        <collection property="assetList" column="id" javaType="ArrayList" ofType="com.example.mybatisdemo.entity.Asset"
+                    select="com.example.mybatisdemo.dao.AssetDao.getAssetsByUserId" fetchType="lazy">
+        </collection>
+    </resultMap>
+
+    <!--useGeneratedKeys : 自动生成主键， 需要DB支持自增长-->
+    <insert id="save" parameterType="com.example.mybatisdemo.entity.User" useGeneratedKeys="true" keyProperty="" keyColumn="" >
+        INSERT INTO `test`.`tb_user`(`name`,`sex`,`age`)VALUES(#{name},#{sex},#{age});
+    </insert>
+
+    <!--<update id="" flushCache="清空缓存" statementType="语句类型" timeout="超时时间" ></update>-->
+    <!--<delete id="" ></delete>-->
+
+    <!--<sql id=""></sql>-->
+    <!--<cache></cache>-->
+</mapper>

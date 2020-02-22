@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+
+<!--此文件给 Test 项目使用的，SpringBoot项目中用不到该文件-->
+<configuration>
+
+    <!--引用外部配置文件， 将外部配置的属性值应用到mybatis-config文件中 db.properties -->
+    <!--<properties resource="db.properties"></properties>-->
+
+    <settings>
+        <!--<setting name="logImp" value="LOG4J"/>-->
+        <!--延迟加载：开启时，所有关联对象都会延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--积极加载: 开启时，会使带有延迟加载属性的对象立即加载，关闭时，按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <!--类型别名，是为Java类型设置的一个短的名字，它只和XML配置有关，仅是为了减少冗余-->
+    <!--<typeAliases>-->
+    <!--</typeAliases>-->
+
+    <!--&lt;!&ndash;类型处理器，将获取的结果值转换成合适的 Java 类型，设置参数时&ndash;&gt;-->
+    <!--<typeHandlers></typeHandlers>-->
+
+    <!--&lt;!&ndash;对象工厂，创建结构对象的实例时使用&ndash;&gt;-->
+    <!--<objectFactory type=""></objectFactory>-->
+
+    <!--<objectWrapperFactory type=""></objectWrapperFactory>-->
+
+    <!--<reflectorFactory type=""></reflectorFactory>-->
+
+    <!--<plugins>-->
+        <!--<plugin interceptor=""></plugin>-->
+    <!--</plugins>-->
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/test"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!--<databaseIdProvider type=""></databaseIdProvider>-->
+
+    <mappers>
+        <mapper resource="UserMapper.xml"/>
+        <mapper resource="CardMapper.xml"/>
+        <mapper resource="AssetMapper.xml"/>
+    </mappers>
+</configuration>
