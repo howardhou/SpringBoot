@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace要指向定义的mapper接口 -->
+<mapper namespace="com.example.druiddemo.dao.UserDao">
+    <!-- id即mapper接口中的具体方法名 -->
+    <!-- resultType即方法返回值-->
+    <select id="getUserById" parameterType="int" resultMap="userMap">
+        SELECT id , name, sex, age FROM tb_user WHERE id = #{id}
+    </select>
+
+    <!--单表操作-->
+    <resultMap id="userMap" type="com.example.druiddemo.model.UserDO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.example.druiddemo.model.UserDO" useGeneratedKeys="true" >
+        INSERT INTO `test`.`tb_user`(`name`,`sex`,`age`)VALUES(#{name},#{sex},#{age});
+    </insert>
+</mapper>
