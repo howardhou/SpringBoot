@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.order.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.example.order.entity.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="commodity_code" jdbcType="VARCHAR" property="commodityCode" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_no, user_id, commodity_code, `count`, amount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.order.entity.Order" useGeneratedKeys="true">
+    insert into t_order (order_no, user_id, commodity_code, 
+      `count`, amount)
+    values (#{orderNo,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{commodityCode,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.order.entity.Order" useGeneratedKeys="true">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="commodityCode != null">
+        commodity_code,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCode != null">
+        #{commodityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.order.entity.Order">
+    update t_order
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCode != null">
+        commodity_code = #{commodityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.order.entity.Order">
+    update t_order
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      commodity_code = #{commodityCode,jdbcType=VARCHAR},
+      `count` = #{count,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--创建订单-->
+  <insert id="createOrder" keyProperty="id" useGeneratedKeys="true"
+          parameterType="com.example.order.entity.Order">
+      insert into t_order values(null,#{order.orderNo},#{order.userId},#{order.commodityCode},${order.count},${order.amount})
+    </insert>
+</mapper>

@@ -1,9 +1,9 @@
-package com.example.storage.service;
+package com.example.common.service;
 
 import com.example.common.dto.CommodityDTO;
 import com.example.common.response.ObjectResponse;
 
-public interface IStorageService {
+public interface StorageService {
     /**
      * 扣减库存
      */

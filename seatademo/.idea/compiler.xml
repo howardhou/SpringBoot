@@ -10,6 +10,7 @@
         <module name="business" />
         <module name="common" />
         <module name="order" />
+        <module name="seata-demo" />
         <module name="seatademo" />
         <module name="storage" />
       </profile>

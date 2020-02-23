@@ -2,7 +2,7 @@ package com.example.storage;
 
 import com.example.common.dto.CommodityDTO;
 import com.example.common.response.ObjectResponse;
-import com.example.storage.service.IStorageService;
+import com.example.common.service.StorageService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class StorageApplicationTests {
 
     @Autowired
-    IStorageService storageService;
+    StorageService storageService;
 
     Logger logger = LoggerFactory.getLogger(StorageApplicationTests.class);
 
