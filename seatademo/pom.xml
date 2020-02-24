@@ -12,7 +12,6 @@
         <seata.version>1.0.0</seata.version>
         <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
         <dubbo.version>2.7.4.1</dubbo.version>
-        <nacos-config-spring-boot.version>0.2.1</nacos-config-spring-boot.version>
         <druid.version>1.1.21</druid.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -59,10 +58,16 @@
                 <artifactId>dubbo-registry-nacos</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery -->
+            <!--<dependency>-->
+                <!--<groupId>com.alibaba.cloud</groupId>-->
+                <!--<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+                <!--<version>2.1.1.RELEASE</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>nacos-config-spring-boot-starter</artifactId>
-                <version>${nacos-config-spring-boot.version}</version>
+                <version>0.2.3</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.nacos</groupId>

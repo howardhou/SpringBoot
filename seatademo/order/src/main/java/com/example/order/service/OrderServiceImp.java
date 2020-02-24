@@ -10,6 +10,8 @@ import com.example.order.entity.Order;
 import com.example.order.mapper.OrderMapper;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +26,8 @@ public class OrderServiceImp implements OrderService {
     @Autowired
     OrderMapper orderMapper;
 
+    Logger logger = LoggerFactory.getLogger(OrderService.class);
+
     @Override
     public ObjectResponse<OrderDTO> createOrder(OrderDTO orderDTO) {
         ObjectResponse<OrderDTO> response = new ObjectResponse<>();
@@ -33,8 +37,11 @@ public class OrderServiceImp implements OrderService {
         accountDTO.setAmount(orderDTO.getOrderAmount());
         ObjectResponse objectResponse = accountService.decreaseAccount(accountDTO);
 
+        logger.info("成功扣库存");
+
         //生成订单号
         orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-",""));
+
         //生成订单
         Order tOrder = new Order();
         BeanUtils.copyProperties(orderDTO,tOrder);
