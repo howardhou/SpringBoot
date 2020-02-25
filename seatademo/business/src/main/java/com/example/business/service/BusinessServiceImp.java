@@ -8,6 +8,7 @@ import com.example.common.enums.RspStatusEnum;
 import com.example.common.response.ObjectResponse;
 import com.example.common.service.OrderService;
 import com.example.common.service.StorageService;
+import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BusinessServiceImp implements BusinessService {
     @Reference(version = "0.0.1")
-    private StorageService storageDubboService;
+    private StorageService storageService;
 
     @Reference(version = "0.0.1")
-    private OrderService orderDubboService;
+    private OrderService orderService;
 
     private boolean flag;
 
@@ -28,15 +29,17 @@ public class BusinessServiceImp implements BusinessService {
      * @Return:
      */
     @Override
-//    @GlobalTransactional(timeoutMills = 300000, name = "dubbo-gts-seata-example")
+    @GlobalTransactional(timeoutMills = 300000, name = "dubbo-gts-seata-example")
     public ObjectResponse handleBusiness(BusinessDTO businessDTO) {
-        //System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         ObjectResponse<Object> objectResponse = new ObjectResponse<>();
         //1、扣减库存
         CommodityDTO commodityDTO = new CommodityDTO();
         commodityDTO.setCommodityCode(businessDTO.getCommodityCode());
         commodityDTO.setCount(businessDTO.getCount());
-        ObjectResponse storageResponse = storageDubboService.decreaseStorage(commodityDTO);
+        ObjectResponse storageResponse = storageService.decreaseStorage(commodityDTO);
 
         //2、创建订单
         OrderDTO orderDTO = new OrderDTO();
@@ -44,7 +47,7 @@ public class BusinessServiceImp implements BusinessService {
         orderDTO.setCommodityCode(businessDTO.getCommodityCode());
         orderDTO.setOrderCount(businessDTO.getCount());
         orderDTO.setOrderAmount(businessDTO.getAmount());
-        ObjectResponse<OrderDTO> response = orderDubboService.createOrder(orderDTO);
+        ObjectResponse<OrderDTO> response = orderService.createOrder(orderDTO);
 
         //打开注释测试事务发生异常后，全局回滚功能
 //        if (!flag) {

@@ -5,6 +5,7 @@ import com.example.common.enums.RspStatusEnum;
 import com.example.common.response.ObjectResponse;
 import com.example.common.service.StorageService;
 import com.example.storage.mapper.StorageMapper;
+import io.seata.core.context.RootContext;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,9 @@ public class StorageServiceImp implements StorageService {
 
     @Override
     public ObjectResponse decreaseStorage(CommodityDTO commodityDTO) {
+
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         int storage = storageMapper.decreaseStorage(commodityDTO.getCommodityCode(), commodityDTO.getCount());
         ObjectResponse<Object> response = new ObjectResponse<>();
         if (storage > 0){

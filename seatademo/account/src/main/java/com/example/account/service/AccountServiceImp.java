@@ -5,12 +5,14 @@ import com.example.common.dto.AccountDTO;
 import com.example.common.enums.RspStatusEnum;
 import com.example.common.response.ObjectResponse;
 import com.example.common.service.AccountService;
+import io.seata.core.context.RootContext;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+// 对于非幂等的操作不能使用重试机制
 @Service(version = "1.0.0",protocol = "${dubbo.protocol.id}",
         application = "${dubbo.application.id}",registry = "${dubbo.registry.id}",
-        timeout = 3000)
+        timeout = 3000 , retries = 0)
 public class AccountServiceImp implements AccountService {
 
     @Autowired
@@ -18,7 +20,13 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public ObjectResponse decreaseAccount(AccountDTO accountDTO) {
+
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         int account = accountMapper.decreaseAccount(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
+
+        //int a = 10/0;
+
         ObjectResponse<Object> response = new ObjectResponse<>();
         if (account > 0){
             response.setStatus(RspStatusEnum.SUCCESS.getCode());

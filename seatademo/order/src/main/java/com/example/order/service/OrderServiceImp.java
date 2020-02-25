@@ -37,7 +37,7 @@ public class OrderServiceImp implements OrderService {
         accountDTO.setAmount(orderDTO.getOrderAmount());
         ObjectResponse objectResponse = accountService.decreaseAccount(accountDTO);
 
-        logger.info("成功扣库存");
+        logger.info("成功扣金额");
 
         //生成订单号
         orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-",""));
@@ -49,6 +49,8 @@ public class OrderServiceImp implements OrderService {
         tOrder.setAmount(orderDTO.getOrderAmount().doubleValue());
         try {
             orderMapper.createOrder(tOrder);
+
+            //int a = 10/0;
         } catch (Exception e) {
             response.setStatus(RspStatusEnum.FAIL.getCode());
             response.setMessage(RspStatusEnum.FAIL.getMessage());
