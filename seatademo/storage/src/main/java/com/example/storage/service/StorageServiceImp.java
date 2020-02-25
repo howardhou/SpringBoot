@@ -18,7 +18,7 @@ public class StorageServiceImp implements StorageService {
     @Override
     public ObjectResponse decreaseStorage(CommodityDTO commodityDTO) {
 
-        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+        System.out.println("Storage : 全局事务，XID = " + RootContext.getXID());
 
         int storage = storageMapper.decreaseStorage(commodityDTO.getCommodityCode(), commodityDTO.getCount());
         ObjectResponse<Object> response = new ObjectResponse<>();

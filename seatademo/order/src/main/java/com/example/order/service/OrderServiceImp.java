@@ -8,6 +8,7 @@ import com.example.common.service.AccountService;
 import com.example.common.service.OrderService;
 import com.example.order.entity.Order;
 import com.example.order.mapper.OrderMapper;
+import io.seata.core.context.RootContext;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public ObjectResponse<OrderDTO> createOrder(OrderDTO orderDTO) {
+
+        System.out.println("Order: 全局事务，XID = " + RootContext.getXID());
+
         ObjectResponse<OrderDTO> response = new ObjectResponse<>();
         //扣减用户账户
         AccountDTO accountDTO = new AccountDTO();

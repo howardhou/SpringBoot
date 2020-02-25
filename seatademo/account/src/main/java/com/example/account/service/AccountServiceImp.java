@@ -6,8 +6,10 @@ import com.example.common.enums.RspStatusEnum;
 import com.example.common.response.ObjectResponse;
 import com.example.common.service.AccountService;
 import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalLock;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 // 对于非幂等的操作不能使用重试机制
 @Service(version = "1.0.0",protocol = "${dubbo.protocol.id}",
@@ -21,7 +23,7 @@ public class AccountServiceImp implements AccountService {
     @Override
     public ObjectResponse decreaseAccount(AccountDTO accountDTO) {
 
-        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+        System.out.println("Account : 全局事务，XID = " + RootContext.getXID());
 
         int account = accountMapper.decreaseAccount(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
 
@@ -40,7 +42,10 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Throwable.class})
+    @GlobalLock
     public void testGlobalLock() {
+
         accountMapper.testGlobalLock("1");
         System.out.println("Hi, i got lock, i will do some thing with holding this lock.");
     }

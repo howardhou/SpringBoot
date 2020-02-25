@@ -21,6 +21,8 @@ class AccountApplicationTests {
     @Test
     void contextLoads() {
 
+        accountService.testGlobalLock();
+
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setUserId("1");
         accountDTO.setAmount(BigDecimal.valueOf(10.0));
