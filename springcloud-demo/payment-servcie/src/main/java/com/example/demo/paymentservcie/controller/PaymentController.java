@@ -1,5 +1,7 @@
 package com.example.demo.paymentservcie.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.demo.common.dto.Balance;
 import com.example.demo.common.service.BalanceService;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +30,7 @@ public class PaymentController implements BalanceService {
 
     @Override
     @RequestMapping(value = "/pay/balance", method = RequestMethod.GET)
+    @SentinelResource(value = "protected-resource", blockHandler = "handleBlock")
     public Balance getBalance(@RequestParam("id") Integer id) {
         System.out.println("request: /pay/balance?id=" + id + ", sleep: " + sleep);
         if (sleep > 0) {
@@ -42,5 +45,9 @@ public class PaymentController implements BalanceService {
         }
 
         return new Balance(0, 0, 0,"none");
+    }
+
+    public Balance handleBlock(Integer id, BlockException e) {
+        return new Balance(0, 0, 0, "限流");
     }
 }
