@@ -1,9 +1,11 @@
 package com.example.demo.paymentservcie.controller;
 
-import com.example.demo.paymentservcie.dto.Balance;
+import com.example.demo.common.dto.Balance;
+import com.example.demo.common.service.BalanceService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RefreshScope
-public class PaymentController {
+public class PaymentController implements BalanceService {
     @Value("${sleep:0}")
     private int sleep;
 
@@ -24,8 +26,9 @@ public class PaymentController {
     }
     };
 
-    @RequestMapping("/pay/balance")
-    public Balance getBalance(@RequestParam Integer id) {
+    @Override
+    @RequestMapping(value = "/pay/balance", method = RequestMethod.GET)
+    public Balance getBalance(@RequestParam("id") Integer id) {
         System.out.println("request: /pay/balance?id=" + id + ", sleep: " + sleep);
         if (sleep > 0) {
             try {

@@ -7,12 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="account-service" />
+        <module name="common" />
         <module name="payment-servcie" />
-        <module name="springcloud-demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="account-service" target="1.8" />
+      <module name="common" target="1.8" />
       <module name="payment-servcie" target="1.8" />
       <module name="springcloud-demo" target="1.8" />
     </bytecodeTargetLevel>
