@@ -10,6 +10,11 @@
     <name>springcloud-demo</name>
     <description>Demo project for Spring Boot</description>
 
+    <modules>
+        <module>payment-servcie</module>
+        <module>account-service</module>
+        <module>common</module>
+    </modules>
 
     <properties>
         <java.version>1.8</java.version>

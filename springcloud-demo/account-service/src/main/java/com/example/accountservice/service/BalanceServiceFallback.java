@@ -1,12 +1,12 @@
 package com.example.accountservice.service;
 
 import com.example.demo.common.dto.Balance;
-import com.example.demo.common.service.BalanceService;
+import org.springframework.stereotype.Component;
 
-public class BalanceServiceFallback implements BalanceService {
-
+@Component
+public class BalanceServiceFallback implements BalanceServiceEx {
     @Override
     public Balance getBalance(Integer id) {
-        return null;
+        return new Balance(0,0,0,"降级");
     }
 }
