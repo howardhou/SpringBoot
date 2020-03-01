@@ -1,5 +1,7 @@
 package com.example.demo.user.service;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.demo.user.UserService;
 import org.apache.dubbo.config.annotation.Service;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ public class UserServiceImpl implements UserService {
     private int sleep;
 
     @Override
+    @SentinelResource(value = "say-hello", blockHandler = "handleBlock")
     public String sayHello(String name) {
         logger.info("call sayHello, sleep: " + sleep);
 
@@ -26,5 +29,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return "Hello, " + name + " (from Dubbo with Spring Boot)";
+    }
+
+    // 添加 handleBlock 方法
+    public String handleBlock(String name, BlockException e) {
+        return name + " - 限流";
     }
 }
