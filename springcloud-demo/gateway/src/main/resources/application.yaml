@@ -4,5 +4,9 @@ spring:
       routes:
       - id: host_route
         uri: lb://account-service
+        filters:
+        - Customer=true
         predicates:
         - Path=/acc/**
+#        predicates:
+#        - Method=GET
