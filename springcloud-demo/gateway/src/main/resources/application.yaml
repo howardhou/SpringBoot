@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: host_route
+        uri: lb://account-service
+        predicates:
+        - Path=/acc/**

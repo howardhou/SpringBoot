@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="account-service" />
         <module name="common" />
+        <module name="gateway" />
         <module name="payment-servcie" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="account-service" target="1.8" />
       <module name="common" target="1.8" />
+      <module name="gateway" target="1.8" />
       <module name="payment-servcie" target="1.8" />
       <module name="springcloud-demo" target="1.8" />
     </bytecodeTargetLevel>
