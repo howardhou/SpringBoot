@@ -1,14 +1,17 @@
 package com.example.mybatisdemo.controller;
 
+import com.example.mybatisdemo.dto.ResultModel;
+import com.example.mybatisdemo.dto.ResultStatus;
 import com.example.mybatisdemo.entity.Asset;
 import com.example.mybatisdemo.jpa.UserEntity;
 import com.example.mybatisdemo.service.AssetService;
 import com.example.mybatisdemo.service.UserService;
 import com.example.mybatisdemo.entity.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,13 +40,31 @@ public class TestController {
     }
 
     @GetMapping("/getAsset/{id}")
-    public Asset getAssetById(@PathVariable Integer id){
+    public ResultModel<Asset> getAssetById(@PathVariable Integer id){
         return assetService.getAssetById(id);
     }
 
     @GetMapping("/getAssetsByUser/{userId}")
-    public List<Asset> getAssetByUserId(@PathVariable Integer userId){
+    public ResultModel<List<Asset>> getAssetByUserId(@PathVariable Integer userId){
         return assetService.getAssetsByUserId(userId);
+    }
+
+    @GetMapping("/getAssetsByUserId")
+    public ResultModel<PageInfo<Asset>> getAssetsByUserId(Integer userId, Integer pageNo, Integer pageSize){
+
+        if (ObjectUtils.isEmpty(userId)){
+            return ResultModel.error(ResultStatus.PARAMETER_MISS);
+        }
+
+        pageNo = ObjectUtils.isEmpty(pageNo) ? 1 : pageNo;
+        pageSize = ObjectUtils.isEmpty(pageSize) ? 20 : pageSize;
+
+        if(0 >= userId || 1 > pageNo || 0 >= pageSize) {
+            return ResultModel.error(ResultStatus.PARAMETER_ERROR);
+        }
+
+        PageHelper.startPage(pageNo, pageSize);
+        return assetService.getAssetsByUserId(userId, pageNo, pageSize);
     }
 
     // JDBCTemplate
@@ -57,7 +78,7 @@ public class TestController {
     public UserEntity getUserEntityById(@PathVariable int id){
         return userService.getUserEntityById(id);
     }
-
+    //jpa
     @GetMapping("/getAllUserEntity")
     public List<UserEntity> getAllUserEntity() {
         return userService.getAllUserEntity();

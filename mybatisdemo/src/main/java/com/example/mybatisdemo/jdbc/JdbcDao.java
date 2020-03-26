@@ -29,6 +29,9 @@ public class JdbcDao {
 
     public static Integer getAll() {
         Connection connection = getConnection();
+
+        //connection.setAutoCommit(true);
+
         String sql = "select * from tb_user";
         PreparedStatement preparedStatement;
 

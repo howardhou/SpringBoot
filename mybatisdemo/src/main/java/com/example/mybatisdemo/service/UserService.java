@@ -18,7 +18,7 @@ public class UserService {
     private final JdbcTemplateDao jdbcTemplateDao;
     // 3. 测试 MyBatis
     private final UserDao userDao;
-
+    // jpa
     private final UserJpa userJpa;
     private final UserRepository userRepository;
 
@@ -37,6 +37,7 @@ public class UserService {
         return userDao.getUserById(id);
     }
 
+    // Mybatis
     public User getUserWithAssetsById(int id) {
         return userDao.getUserWithAssetsById(id);
     }
@@ -50,7 +51,7 @@ public class UserService {
     public UserEntity getUserEntityById(int id){
         return userJpa.getUser(id);
     }
-
+    //jpa
     public List<UserEntity> getAllUserEntity(){
         return userRepository.findAll();
     }
