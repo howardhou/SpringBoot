@@ -7,8 +7,10 @@ import org.apache.dubbo.config.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
-
+// 解决自动刷新问题
+@RefreshScope
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @SentinelResource(value = "say-hello", blockHandler = "handleBlock")
     public String sayHello(String name) {
-        logger.info("call sayHello, sleep: " + sleep);
+        logger.info("call sayHello, sleep: " + sleep );
 
         try {
             Thread.sleep(sleep);
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
-        return "Hello, " + name + " (from Dubbo with Spring Boot)";
+        return "Hello, " + name ;
     }
 
     // 添加 handleBlock 方法
