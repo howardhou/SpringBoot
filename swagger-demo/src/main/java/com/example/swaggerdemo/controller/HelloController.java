@@ -1,8 +1,14 @@
 package com.example.swaggerdemo.controller;
 
 import io.swagger.annotations.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @Api(value = "HelloController", description = "Hello相关的Rest接口")
 @RestController
@@ -23,5 +29,25 @@ public class HelloController {
     @RequestMapping("hello")
     public String hello(){
         return "hello world";
+    }
+
+
+    @ApiImplicitParam(name = "student", value = "普通用户", required = true, dataType = "Student")
+    @RequestMapping(value = "/student", method = RequestMethod.POST)
+    public String saveStudent(@RequestBody @Valid Student student, BindingResult bindingResult){
+
+        //在这里，我们判断参数是否通过校验
+        if (bindingResult.hasErrors()) {
+            // 默认是 普通模式 ： 会校验完所有的属性
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                System.out.println(error.getDefaultMessage());
+            }
+
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            //自定义的返回，并将错误信息返回
+            return message;
+        }
+
+        return "Success";
     }
 }
